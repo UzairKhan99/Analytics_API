@@ -15,5 +15,5 @@ def get_items():
 @router.get("/{event_id}")
 def get_items(event_id: int) -> EventSchema:
     return {
-        "id": event_id
+        "idd": event_id
     }

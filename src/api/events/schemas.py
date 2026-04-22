@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 
-class Event(BaseModel):
-    id = int
+class EventSchema(BaseModel):
+    id: int
