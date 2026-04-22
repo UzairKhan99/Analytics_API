@@ -1,8 +1,4 @@
-Here is a clean, professional **README.md** you can copy and paste into your GitHub:
 
----
-
-```markdown
 # Analytics API
 
 A FastAPI-based Analytics API with Docker support, built for learning and scalable backend development.
