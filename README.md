@@ -86,23 +86,3 @@ Uzair Khan
 
 ---
 
-## ⭐ Notes
-
-This project is built for learning backend development, APIs, and Docker workflows.
-
-```
-
----
-
-### What you should do now:
-1. Go to your GitHub repo  
-2. Click **Add README**  
-3. Paste this code  
-4. Commit  
-
----
-
-If you want, I can also make:
-- a **better portfolio-style README**
-- or a **shorter version for assignments/interviews**
-```
