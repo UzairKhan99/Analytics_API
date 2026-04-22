@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+gunicorn
+pydantic 
+sqlalchemy 
+timescaledb 
+sqlmodel
+requests

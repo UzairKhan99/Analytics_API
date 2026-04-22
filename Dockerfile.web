@@ -1,0 +1,40 @@
+# 1 - Download & Install Python 3
+FROM python:3.14.0-slim
+
+# 2 - Create Virtual Environment
+RUN python -m venv /opt/venv
+
+# Set the virtual environment as the current location
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Upgrade pip
+RUN pip install --upgrade pip
+
+# Set Python-related environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Install os dependencies
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /code
+
+# Copy requirements file
+COPY requirements.txt /tmp/requirements.txt
+
+# Copy project code
+COPY ./src /code
+
+# Install Python requirements
+RUN pip install -r /tmp/requirements.txt
+
+# Copy bash script
+COPY ./boot/docker-run.sh /opt/run.sh
+RUN chmod +x /opt/run.sh
+
+# Run the app
+CMD ["/opt/run.sh"]
