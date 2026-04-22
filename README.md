@@ -18,32 +18,6 @@ A FastAPI-based Analytics API with Docker support, built for learning and scalab
 
 ---
 
-## 📁 Project Structure
-
-```
-
-analytics-api/
-│
-├── boot/                 # Startup scripts
-│   └── docker-run.sh
-│
-├── nbs/                  # Jupyter notebooks (testing APIs)
-│
-├── src/                  # Main application code
-│   ├── api/
-│   │   └── events/
-│   │       └── routing.py
-│   └── main.py
-│
-├── Dockerfile.web        # Docker build file
-├── compose.yaml          # Docker Compose config
-├── requirements.txt      # Python dependencies
-└── README.md
-
-````
-
----
-
 ## ⚙️ Setup & Run
 
 ### 🔹 Using Docker Compose (Recommended)
