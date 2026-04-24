@@ -1,8 +1,17 @@
 
 from fastapi import FastAPI
 from api.events import router as event_router
+from contextlib import asynccontextmanager
+from src.api.events.session import init_db  # Updated import path
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
+# Create FastAPI app with lifespan handler
+app = FastAPI(lifespan=lifespan)
 
 # Include the events router under the /api/events prefix
 app.include_router(event_router, prefix='/api/events')
