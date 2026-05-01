@@ -7,3 +7,4 @@ timescaledb
 sqlmodel
 requests
 python-decouple
+#psycopg[binary]
