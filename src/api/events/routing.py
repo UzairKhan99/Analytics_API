@@ -1,9 +1,56 @@
-from fastapi import APIRouter, Depends, HTTPException
+from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import cast, func
+from sqlalchemy.dialects.postgresql import INTERVAL
 from sqlmodel import Session, select
-from .models import EventModel, EventsListSchema, EventCreateSchema, UpdateSchema
-from .session import get_session
+
+from api.db.session import get_session
+from .models import (
+    EventBucketSchema,
+    EventModel,
+    EventsListSchema,
+    EventCreateSchema,
+    UpdateSchema,
+    get_utc_now,
+)
 
 router = APIRouter()
+
+
+@router.get("/analytics", response_model=List[EventBucketSchema])
+def read_events_analytics(
+    duration: str = Query(default="1 day"),
+    pages: Optional[List[str]] = Query(default=None),
+    session: Session = Depends(get_session)
+):
+    bucket = func.time_bucket(
+        cast(duration, INTERVAL),
+        EventModel.created_at,
+    ).label("bucket")
+    query = (
+        select(
+            bucket,
+            EventModel.page.label("page"),
+            func.count(EventModel.id).label("count"),
+        )
+        .group_by(
+            bucket,
+            EventModel.page,
+        )
+        .order_by(
+            bucket,
+            EventModel.page,
+        )
+    )
+
+    if pages:
+        query = query.where(EventModel.page.in_(pages))
+
+    results = session.exec(query).all()
+    return [
+        {"bucket": bucket, "page": page, "count": count}
+        for bucket, page, count in results
+    ]
 
 
 @router.get("/", response_model=EventsListSchema)
@@ -44,9 +91,9 @@ def update_event(event_id: int,
     if event is None:
         raise HTTPException(status_code=404, detail="Event not found")
     data = payload.model_dump()
-    for keys, value in data.item():
-        setattr(event, keys, value)
-    obj.updated_at = get__utc_now()
+    for key, value in data.items():
+        setattr(event, key, value)
+    event.updated_at = get_utc_now()
     session.add(event)
     session.commit()
     session.refresh(event)
