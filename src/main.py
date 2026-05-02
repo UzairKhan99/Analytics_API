@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from api.events import router as event_router
 from contextlib import asynccontextmanager
-from api.events.session import init_db  # Updated import path
+from api.db.session import init_db
 
 
 @asynccontextmanager
